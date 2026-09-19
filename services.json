@@ -1,0 +1,17 @@
+[
+  { "id": "ig-followers", "name": "Instagram Followers", "platform": "instagram", "pricePer1000": 250, "description": "Real-looking followers" },
+  { "id": "ig-likes", "name": "Instagram Likes", "platform": "instagram", "pricePer1000": 80, "description": "Post likes" },
+  { "id": "ig-views", "name": "Instagram Views", "platform": "instagram", "pricePer1000": 30, "description": "Reels views" },
+  { "id": "fb-followers", "name": "Facebook Page Followers", "platform": "facebook", "pricePer1000": 300, "description": "Page followers" },
+  { "id": "fb-likes", "name": "Facebook Post Likes", "platform": "facebook", "pricePer1000": 120, "description": "Post likes" },
+  { "id": "fb-shares", "name": "Facebook Shares", "platform": "facebook", "pricePer1000": 200, "description": "Post shares" },
+  { "id": "fb-comments", "name": "Facebook Comments", "platform": "facebook", "pricePer1000": 450, "description": "Custom comments" },
+  { "id": "fb-disabled-appeal", "name": "Facebook Disabled Appeal", "platform": "facebook", "pricePer1000": 350, "description": "Appeal assistance" },
+  { "id": "tiktok-followers", "name": "TikTok Followers", "platform": "tiktok", "pricePer1000": 280, "description": "Followers" },
+  { "id": "tiktok-views", "name": "TikTok Views", "platform": "tiktok", "pricePer1000": 25, "description": "Fast views" },
+  { "id": "yt-subs", "name": "YouTube Subscribers", "platform": "youtube", "pricePer1000": 800, "description": "Subscribers" },
+  { "id": "yt-views", "name": "YouTube Views", "platform": "youtube", "pricePer1000": 150, "description": "Views" },
+  { "id": "load-100", "name": "Murang Load - 100", "platform": "load", "pricePer1000": 100, "description": "100 load fixed price" },
+  { "id": "netflix-1m", "name": "Netflix Premium 1 Month", "platform": "netflix", "pricePer1000": 149, "description": "Netflix 1 month fixed" },
+  { "id": "netflix-3m", "name": "Netflix Premium 3 Months", "platform": "netflix", "pricePer1000": 399, "description": "Netflix 3 months fixed" }
+]

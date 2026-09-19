@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Social Boost Service</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+*{font-family:'Inter',sans-serif;box-sizing:border-box}
+body{background:#0f172a;color:#fff;margin:0;padding:20px}
+.container{max-width:700px;margin:auto}
+h1{text-align:center;margin-bottom:0}
+.subtitle{text-align:center;color:#94a3b8;margin-top:5px}
+.card{background:#1e293b;padding:20px;border-radius:12px;margin-top:20px}
+label{display:block;margin-top:12px;color:#cbd5e1;font-size:14px}
+select,input{width:100%;padding:10px;margin-top:5px;border-radius:8px;border:none;background:#334155;color:#fff}
+button{width:100%;padding:12px;margin-top:15px;background:#3b82f6;color:#fff;border:none;border-radius:8px;font-weight:700;cursor:pointer}
+button:hover{background:#2563eb}
+.total{margin-top:15px;font-size:18px;font-weight:700}
+.service-card{background:#334155;padding:10px;border-radius:8px;margin-top:8px;font-size:14px}
+.badge{background:#3b82f6;padding:2px 6px;border-radius:4px;font-size:11px;margin-left:6px}
+.success{background:#16a34a;padding:10px;border-radius:8px;margin-top:10px}
+</style>
+</head>
+<body>
+<div class="container">
+<h1>🚀 Social Boost</h1>
+<p class="subtitle">Instagram, Facebook, TikTok, YouTube, Load, Netflix</p>
+<div class="card">
+<h2>Order</h2>
+<label>Platform</label>
+<select id="platform"><option value="">Piliin mo</option><option value="instagram">Instagram</option><option value="facebook">Facebook</option><option value="tiktok">TikTok</option><option value="youtube">YouTube</option><option value="load">Murang Load</option><option value="netflix">Netflix</option></select>
+<label>Service</label><select id="service"></select>
+<label id="qtyLabel">Quantity</label><input type="number" id="quantity" value="1000">
+<label id="linkLabel">Link</label><input type="text" id="link" placeholder="https://...">
+<label>Email</label><input type="email" id="email" placeholder="email@gmail.com">
+<div class="total">Total: ₱<span id="total">0</span></div>
+<button onclick="placeOrder()">Mag Order</button>
+<div id="orderResult"></div>
+</div>
+<div class="card"><h2>Track Order</h2><input type="text" id="trackId" placeholder="ORD-..."><button onclick="trackOrder()">I-Track</button><div id="trackResult"></div></div>
+<div class="card"><h2>All Services</h2><div id="servicesList"></div></div>
+</div>
+<script>
+let allServices=[];
+async function loadServices(){const res=await fetch('/api/services');allServices=await res.json();renderServices();setupPlatformFilter();calcTotal();}
+function renderServices(filter=''){const list=document.getElementById('servicesList');const filtered=filter?allServices.filter(s=>s.platform===filter):allServices;list.innerHTML=filtered.map(s=>`<div class="service-card"><b>${s.name}</b> <span class="badge">${s.platform}</span><div>₱${s.pricePer1000} - ${s.description}</div></div>`).join('');}
+function setupPlatformFilter(){const platform=document.getElementById('platform');const serviceSelect=document.getElementById('service');function updateServices(){const p=platform.value;renderServices(p);const filtered=p?allServices.filter(s=>s.platform===p):allServices;serviceSelect.innerHTML=filtered.map(s=>`<option value="${s.id}">${s.name} - ₱${s.pricePer1000}</option>`).join('');const isFixed=p==='load'||p==='netflix';document.getElementById('link').style.display=isFixed?'none':'block';document.getElementById('linkLabel').style.display=isFixed?'none':'block';document.getElementById('quantity').style.display=isFixed?'none':'block';document.getElementById('qtyLabel').style.display=isFixed?'none':'block';if(isFixed)document.getElementById('link').value='N/A';calcTotal();}platform.addEventListener('change',updateServices);serviceSelect.addEventListener('change',calcTotal);document.getElementById('quantity').addEventListener('input',calcTotal);updateServices();}
+function calcTotal(){const serviceId=document.getElementById('service').value;const qty=parseInt(document.getElementById('quantity').value)||1000;const s=allServices.find(x=>x.id===serviceId);if(!s)return;let total=s.pricePer1000;if(['instagram','facebook','tiktok','youtube'].includes(s.platform)){total=(s.pricePer1000*qty)/1000;}document.getElementById('total').innerText=total.toFixed(2);}
+async function placeOrder(){const body={platform:document.getElementById('platform').value,serviceId:document.getElementById('service').value,quantity:document.getElementById('quantity').value,link:document.getElementById('link').value,email:document.getElementById('email').value};if(!body.platform||!body.serviceId||!body.email){alert('Kumpletuhin mo muna boss!');return;}const res=await fetch('/api/orders',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});const data=await res.json();document.getElementById('orderResult').innerHTML=`<div class="success">Success! Order ID: <b>${data.id}</b><br>Total: ₱${data.total}<br>Copy mo ID para ma-track!</div>`;}
+async function trackOrder(){const id=document.getElementById('trackId').value;const res=await fetch(`/api/orders/${id}`);if(!res.ok){document.getElementById('trackResult').innerText='Hindi mahanap';return;}const o=await res.json();document.getElementById('trackResult').innerHTML=`Status: ${o.status} | Total: ₱${o.total} | Service: ${o.serviceId}`;}
+loadServices();
+</script>
+</body>
+</html>
+</script>
+</body>
+</html>
